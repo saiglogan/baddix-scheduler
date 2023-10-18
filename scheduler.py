@@ -29,11 +29,11 @@ def save_state():
         'inprogress_game': [st.session_state.get("inprogress_game")]
     })
 
-    df.to_csv("scheduler_state.csv", index=False)
+    df.to_csv("10-18-scheduler_state.csv", index=False)
 
 def load_state():
-    if os.path.exists("scheduler_state.csv"):
-        df = pd.read_csv("scheduler_state.csv")
+    if os.path.exists("10-18-scheduler_state.csv"):
+        df = pd.read_csv("10-18-scheduler_state.csv")
         players_data = eval(df['players'].iloc[0])
         games_data = eval(df['scheduled_games'].iloc[0])
 
@@ -81,7 +81,7 @@ if 'inprogress_game' not in st.session_state:
 
 
 # Tabs
-tabs = ["Add Player", "View Players", "Schedule", "In-Progress Games", "Reshuffle & Clear"]
+tabs = ["Add Player", "View Players", "Schedule", "Reshuffle & Clear"]
 selected_tab = st.selectbox("Choose a tab", tabs)
 
 # Initialize state variables if not present
@@ -93,7 +93,7 @@ if selected_tab == "Add Player":
     st.subheader("Add Player")
     player_name = st.text_input("Name")
     player_gender = st.radio("Gender", ["Male", "Female"])
-    player_level = st.selectbox("Level", ["C+", "C", "D+", "D", "E+"])
+    player_level = st.selectbox("Level", ["C", "D+", "D", "E+"])
 
     if st.button("Add Player"):
         new_player = Player(player_name, player_gender, player_level)
@@ -185,9 +185,9 @@ elif selected_tab == "Schedule":
     inprogress_game = st.session_state.get("inprogress_game", None)
     for idx, game in enumerate(scheduled_games):
         if inprogress_game == idx:
-            st.write(f"Court {idx + 1} (In Progress): {', '.join(str(player) for player in game)}")
+            st.write(f"Game {idx + 1} (In Progress): {', '.join(str(player) for player in game)}")
         else:
-            st.write(f"Court {idx + 1}: {', '.join(str(player) for player in game)}")
+            st.write(f"Game {idx + 1}: {', '.join(str(player) for player in game)}")
 
 
 # In-Progress Games Tab
@@ -195,7 +195,7 @@ elif selected_tab == "In-Progress Games":
     st.subheader("Manage In-Progress Games")
     inprogress_game = st.session_state.get("inprogress_game", None)
     if inprogress_game is not None:
-        st.write(f"Court {inprogress_game + 1} is currently in progress!")
+        st.write(f"Game {inprogress_game + 1} is currently in progress!")
     else:
         st.write("No games are currently in progress.")
 
@@ -203,6 +203,6 @@ elif selected_tab == "In-Progress Games":
 elif selected_tab == "Reshuffle & Clear":
     st.subheader("Clear Local Storage")
     if st.button("Clear State"):
-        if os.path.exists("scheduler_state.csv"):
-            os.remove("scheduler_state.csv")
+        if os.path.exists("10-18-scheduler_state.csv"):
+            os.remove("10-18-scheduler_state.csv")
         st.session_state.clear()
