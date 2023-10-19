@@ -50,7 +50,7 @@ def get_possible_teams(level, players):
     level_players = [player for player in players if player.level == level]
     
     adjacent_levels = {
-        'C': ['D+'],
+        'C': ['D+', 'D'],
         'D+': ['C', 'D'],
         'D': ['D+', 'E+'],
         'E+': ['D']
